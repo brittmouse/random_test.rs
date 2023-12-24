@@ -1,5 +1,23 @@
 use rand::Rng;
-use std::io;
+use std::{collections::HashMap, io};
+
+fn dispersion(modu: u32, test: u32) -> HashMap<u32, u32> {
+    let mut container = HashMap::new();
+    if test > 0 && modu > 0 {
+        for _i in 0..test {
+            let result: u32 = rand::thread_rng().gen_range(1..=1_000_000) % modu;
+            let count = container.entry(result).or_insert(0);
+            *count += 1;
+        }
+    }
+    return container;
+}
+
+fn map_print(map: HashMap<u32, u32>) {
+    for (k, v) in &map {
+        println!("{}: {}", k, v);
+    }
+}
 
 fn main() {
     println!("How random is the random crate?");
@@ -26,19 +44,5 @@ fn main() {
         Err(_) => 0,
     };
 
-    let mut container: Vec<u32> = Vec::new();
-    let mut i = 0;
-    if modulus > 0 && repeat > 0 {
-        while i < repeat {
-            let rand_num: u32 = rand::thread_rng().gen_range(1..=1000000);
-            container.push(rand_num % &modulus);
-            i = i + 1;
-        }
-        i = 0;
-        while i < modulus {
-            let count = container.iter().filter(|&n| *n == i).count();
-            println!("{}: {}", &i, &count);
-            i = i + 1;
-        }
-    }
+    map_print(dispersion(modulus, repeat));
 }
