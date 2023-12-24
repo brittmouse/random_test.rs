@@ -5,7 +5,7 @@ fn dispersion(modu: u32, test: u32) -> HashMap<u32, u32> {
     let mut container = HashMap::new();
     if test > 0 && modu > 0 {
         for _i in 0..test {
-            let result: u32 = rand::thread_rng().gen_range(1..=1000000) % modu;
+            let result: u32 = rand::thread_rng().gen_range(1..=1_000_000) % modu;
             let count = container.entry(result).or_insert(0);
             *count += 1;
         }
